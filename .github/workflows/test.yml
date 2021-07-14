@@ -42,7 +42,13 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install swi-prolog
-        run: choco install swi-prolog
+        run: |
+          choco install swi-prolog
+          # Bring `swipl` into PATH.
+          # See https://stackoverflow.com/a/46760714
+          Import-Module "$env:ProgramData\chocolatey\helpers\chocolateyInstaller.psm1"
+          Update-SessionEnvironment
+          swipl --version
 
       - name: Build
         shell: bash
@@ -50,6 +56,5 @@ jobs:
         #SWIPL: C:\Program Files\swipl\bin\swipl.exe
         #run: make
         run: |
-          refreshenv
           which swipl
           swipl --version
