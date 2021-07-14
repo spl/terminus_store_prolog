@@ -49,6 +49,7 @@ jobs:
           Import-Module "$env:ProgramData\chocolatey\helpers\chocolateyInstaller.psm1"
           Update-SessionEnvironment
           swipl --version
+          echo $env:Path
 
       - name: Build
         shell: bash
@@ -56,5 +57,6 @@ jobs:
         #SWIPL: C:\Program Files\swipl\bin\swipl.exe
         #run: make
         run: |
+          echo $PATH
           which swipl
           swipl --version
