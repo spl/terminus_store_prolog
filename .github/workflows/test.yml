@@ -6,34 +6,34 @@ on:
 
 jobs:
 
-  test-ubuntu:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      # Installing swipl on Debian: https://www.swi-prolog.org/build/PPA.html
-      - name: Install swi-prolog
-        run: |
-          sudo apt-add-repository ppa:swi-prolog/stable
-          sudo apt-get update
-          sudo apt-get install swi-prolog
-
-      - name: Build
-        run: make
-
-  test-macos:
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      # Installing swipl on macOS: https://www.swi-prolog.org/build/macos.html
-      - name: Install swi-prolog
-        run: brew install swi-prolog
-
-      - name: Build
-        run: make
+#  test-ubuntu:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      # Installing swipl on Debian: https://www.swi-prolog.org/build/PPA.html
+#      - name: Install swi-prolog
+#        run: |
+#          sudo apt-add-repository ppa:swi-prolog/stable
+#          sudo apt-get update
+#          sudo apt-get install swi-prolog
+#
+#      - name: Build
+#        run: make
+#
+#  test-macos:
+#    runs-on: macos-latest
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      # Installing swipl on macOS: https://www.swi-prolog.org/build/macos.html
+#      - name: Install swi-prolog
+#        run: brew install swi-prolog
+#
+#      - name: Build
+#        run: make
 
   test-windows:
     runs-on: windows-latest
@@ -46,6 +46,9 @@ jobs:
 
       - name: Build
         shell: bash
-        env:
-          SWIPL: C:\Program Files\swipl\bin\swipl.exe
-        run: make
+        #env:
+        #SWIPL: C:\Program Files\swipl\bin\swipl.exe
+        #run: make
+        run: |
+          which swipl
+          swipl --version
