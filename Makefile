@@ -28,15 +28,13 @@ else
   endif
 endif
 
-RUST_LIB_PATH := rust/target/$(RUST_TARGET)/$(RUST_LIB_NAME).$(SOEXT)
-TARGET_PATH := $(PACKSODIR)/libterminus_store.$(SOEXT)
-
 all: release
 
 build:
 	mkdir -p $(PACKSODIR)
 	cd rust; cargo build $(CARGO_FLAGS)
-	cp $(RUST_LIB_PATH) $(TARGET_PATH)
+	cp rust/target/$(RUST_TARGET)/$(RUST_LIB_NAME).$(SOEXT) \
+	   $(PACKSODIR)/libterminus_store.$(SOEXT)
 
 check::
 
