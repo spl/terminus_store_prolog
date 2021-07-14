@@ -46,4 +46,6 @@ jobs:
 
       - name: Build
         shell: bash
+        env:
+          SWIPL: C:\Program Files\swipl\bin\swipl.exe
         run: make
