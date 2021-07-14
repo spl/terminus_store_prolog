@@ -1,0 +1,49 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  test-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Installing swipl on Debian: https://www.swi-prolog.org/build/PPA.html
+      - name: Install swi-prolog
+        run: |
+          sudo apt-add-repository ppa:swi-prolog/stable
+          sudo apt-get update
+          sudo apt-get install swi-prolog
+
+      - name: Build
+        run: make
+
+  test-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Installing swipl on macOS: https://www.swi-prolog.org/build/macos.html
+      - name: Install swi-prolog
+        run: brew install swi-prolog
+
+      - name: Build
+        run: make
+
+  test-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install swi-prolog
+        run: choco install swi-prolog
+
+      - name: Build
+        shell: bash
+        run: make
