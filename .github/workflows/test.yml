@@ -45,13 +45,15 @@ jobs:
         run: |
           choco install llvm swi-prolog
 
-          # Add `swipl` to current $PATH. See <https://stackoverflow.com/a/46760714>
+          # Add `swipl` to current $PATH. <https://stackoverflow.com/a/46760714>
           Import-Module "$env:ProgramData\chocolatey\helpers\chocolateyInstaller.psm1"
           Update-SessionEnvironment
 
-          # Add `swipl` path to $GITHUB_PATH to make it persist across steps.
-          # See <https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions>
+          # Add `swipl`, `clang` paths to $GITHUB_PATH to make them persist across steps.
+          # <https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions>
           echo (Split-Path -Path (Get-Command swipl).Source) `
+            | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo (Split-Path -Path (Get-Command clang).Source) `
             | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Build
