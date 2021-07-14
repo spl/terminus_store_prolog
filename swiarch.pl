@@ -4,6 +4,7 @@
 %% Print the value of the SWIARCH environment variable.
 %%
 
-:- current_prolog_flag(arch, Swiarch),
-   write_term(Swiarch, [quoted(false)]),
+:- current_prolog_flag(arch, Arch),
+   current_prolog_flag(executable, Executable),
+   format('~s "~s"', [Arch, Executable]),
    halt.

@@ -1,8 +1,14 @@
+# Extract the necessary variables used by `swipl`
+SWIPL_VARS = $(shell ./swiarch.pl)
+
 # Architecture string used by `swipl`
-SWIARCH = $(shell ./swiarch.pl)
+ARCH = $(firstword $(SWIPL_VARS))
+
+# Path of `swipl` used by `swipl-fli`
+SWIPL = $(lastword $(SWIPL_VARS))
 
 # Pack shared object directory used by `swipl`
-PACKSODIR = lib/$(SWIARCH)
+PACKSODIR = lib/$(ARCH)
 
 RUST_LIB_NAME = terminus_store_prolog
 RUST_TARGET=release
@@ -10,11 +16,11 @@ RUST_TARGET_DIR = rust/target/$(RUST_TARGET)/
 RUST_TARGET_LOCATION = rust/target/$(RUST_TARGET)/lib$(RUST_LIB_NAME).$(SOEXT)
 CARGO_FLAGS =
 
-ifeq ($(SWIARCH), x64-win64)
+ifeq ($(ARCH), x64-win64)
 SOEXT = dll
 # NOTE: this is not guaranteed but we only support win64 now anyway
 RUST_TARGET_LOCATION = rust/target/$(RUST_TARGET)/$(RUST_LIB_NAME).$(SOEXT)
-else ifeq ($(SWIARCH), x86_64-darwin)
+else ifeq ($(ARCH), x86_64-darwin)
 SOEXT = dylib
 else
 SOEXT = so
