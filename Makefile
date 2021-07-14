@@ -1,39 +1,42 @@
-# Extract the necessary variables used by `swipl`
-SWIPL_VARS = $(shell ./swiarch.pl)
+# See <https://www.swi-prolog.org/howto/ForeignPack.html> for documentation on
+# creating a pack using non-Prolog code.
 
-# Architecture string used by `swipl`
-ARCH = $(firstword $(SWIPL_VARS))
+# Architecture string used by `swipl`. If not set, use a script to look it up.
+SWIARCH ?= $(shell ./script/swiarch.pl)
 
-# Path of `swipl` used by `swipl-fli`
-SWIPL = $(lastword $(SWIPL_VARS))
+# Pack shared object directory used by `swipl`. If not set, use the expected
+# value.
+PACKSODIR ?= lib/$(SWIARCH)
 
-# Pack shared object directory used by `swipl`
-PACKSODIR = lib/$(ARCH)
+# Rust and Cargo variables
+RUST_LIB_NAME := terminus_store_prolog
+RUST_TARGET := release
+CARGO_FLAGS :=
 
-RUST_LIB_NAME = terminus_store_prolog
-RUST_TARGET=release
-RUST_TARGET_DIR = rust/target/$(RUST_TARGET)/
-RUST_TARGET_LOCATION = rust/target/$(RUST_TARGET)/lib$(RUST_LIB_NAME).$(SOEXT)
-CARGO_FLAGS =
-
-ifeq ($(ARCH), x64-win64)
-SOEXT = dll
-# NOTE: this is not guaranteed but we only support win64 now anyway
-RUST_TARGET_LOCATION = rust/target/$(RUST_TARGET)/$(RUST_LIB_NAME).$(SOEXT)
-else ifeq ($(ARCH), x86_64-darwin)
-SOEXT = dylib
+# Set some architecture-dependent variables.
+ifeq ($(SWIARCH), x64-win64)
+  # Shared object file extension
+  SOEXT := dll
 else
-SOEXT = so
+  RUST_LIB_NAME := lib$(RUST_LIB_NAME)
+  ifeq ($(SWIARCH), x86_64-darwin)
+    # While SOEXT is set by `swipl`, the value for macOS is not what we want
+    # ("so"). So, we set it correctly here.
+    SOEXT := dylib
+  else
+    SOEXT := so
+  endif
 endif
 
-TARGET = $(PACKSODIR)/libterminus_store.$(SOEXT)
+RUST_LIB_PATH := rust/target/$(RUST_TARGET)/$(RUST_LIB_NAME).$(SOEXT)
+TARGET_PATH := $(PACKSODIR)/libterminus_store.$(SOEXT)
 
 all: release
 
 build:
 	mkdir -p $(PACKSODIR)
 	cd rust; cargo build $(CARGO_FLAGS)
-	cp $(RUST_TARGET_LOCATION) $(TARGET)
+	cp $(RUST_LIB_PATH) $(TARGET_PATH)
 
 check::
 

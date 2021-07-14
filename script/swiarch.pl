@@ -5,6 +5,5 @@
 %%
 
 :- current_prolog_flag(arch, Arch),
-   current_prolog_flag(executable, Executable),
-   format('~s "~s"', [Arch, Executable]),
+   write(Arch),
    halt.
