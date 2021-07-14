@@ -50,5 +50,6 @@ jobs:
         #SWIPL: C:\Program Files\swipl\bin\swipl.exe
         #run: make
         run: |
+          refreshenv
           which swipl
           swipl --version
