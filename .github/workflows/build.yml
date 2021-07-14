@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  test-ubuntu:
+  build-ubuntu:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
       - name: Build
         run: make
 
-  test-macos:
+  build-macos:
     runs-on: macos-latest
 
     steps:
@@ -36,7 +36,7 @@ jobs:
       - name: Build
         run: make
 
-  test-windows:
+  build-windows:
     runs-on: windows-latest
 
     steps:
