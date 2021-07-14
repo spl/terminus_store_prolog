@@ -45,11 +45,11 @@ jobs:
         run: |
           choco install swi-prolog
           #echo "C:\Program Files\swipl\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo (Split-Path -Path (Get-Command swipl).Source) | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           # Bring `swipl` into PATH.
           # See https://stackoverflow.com/a/46760714
-          #Import-Module "$env:ProgramData\chocolatey\helpers\chocolateyInstaller.psm1"
-          #Update-SessionEnvironment
+          Import-Module "$env:ProgramData\chocolatey\helpers\chocolateyInstaller.psm1"
+          Update-SessionEnvironment
+          echo (Split-Path -Path (Get-Command swipl).Source) | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Build
         shell: bash
@@ -57,5 +57,6 @@ jobs:
         #SWIPL: C:\Program Files\swipl\bin\swipl.exe
         #run: make
         run: |
+          echo $PATH
           which swipl
           swipl --version
