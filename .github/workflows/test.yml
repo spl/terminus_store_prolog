@@ -6,34 +6,35 @@ on:
 
 jobs:
 
-#  test-ubuntu:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      # Installing swipl on Debian: https://www.swi-prolog.org/build/PPA.html
-#      - name: Install swi-prolog
-#        run: |
-#          sudo apt-add-repository ppa:swi-prolog/stable
-#          sudo apt-get update
-#          sudo apt-get install swi-prolog
-#
-#      - name: Build
-#        run: make
-#
-#  test-macos:
-#    runs-on: macos-latest
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      # Installing swipl on macOS: https://www.swi-prolog.org/build/macos.html
-#      - name: Install swi-prolog
-#        run: brew install swi-prolog
-#
-#      - name: Build
-#        run: make
+  test-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Install SWI Prolog using a PPA for the latest stable version. See
+      # <https://www.swi-prolog.org/build/PPA.html>
+      - name: Install swi-prolog
+        run: |
+          sudo apt-add-repository ppa:swi-prolog/stable
+          sudo apt-get update
+          sudo apt-get install swi-prolog
+
+      - name: Build
+        run: make
+
+  test-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Install the latest stable SWI Prolog using Homebrew.
+      - name: Install swi-prolog
+        run: brew install swi-prolog
+
+      - name: Build
+        run: make
 
   test-windows:
     runs-on: windows-latest
@@ -41,6 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # Install the latest stable LLVM and SWI Prolog using Chocolatey.
       - name: Install llvm and swi-prolog
         run: |
           choco install llvm swi-prolog
@@ -62,9 +64,8 @@ jobs:
           echo "LIBCLANG_PATH=$(Split-Path -Path (Get-Command clang).Source)" `
             | Out-File -Encoding utf8 -Append -FilePath $env:GITHUB_ENV
 
+      # Build using the Git Bash shell because the Makefile does not work in any
+      # native Windows shells.
       - name: Build
         shell: bash
-        run: |
-          # Check that `swipl` works before building.
-          swipl --version
-          make
+        run: make
