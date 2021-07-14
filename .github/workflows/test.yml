@@ -46,8 +46,12 @@ jobs:
           choco install swi-prolog
           # Bring `swipl` into PATH.
           # See https://stackoverflow.com/a/46760714
-          Import-Module "$env:ProgramData\chocolatey\helpers\chocolateyInstaller.psm1"
-          Update-SessionEnvironment
+          #Import-Module "$env:ProgramData\chocolatey\helpers\chocolateyInstaller.psm1"
+          #Update-SessionEnvironment
+
+      - name: refreshenv
+        run: |
+          refreshenv
           swipl --version
           echo $env:Path
 
