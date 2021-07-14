@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install swi-prolog
+      - name: Install llvm and swi-prolog
         run: |
           choco install llvm swi-prolog
 
